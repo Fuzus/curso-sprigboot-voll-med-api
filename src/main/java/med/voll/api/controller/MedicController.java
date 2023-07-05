@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/medicos")
 public class MedicController {
@@ -23,7 +21,7 @@ public class MedicController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity register(@RequestBody @Valid RegisterMedicData obj, UriComponentsBuilder uriBuilder){
+    public ResponseEntity register(@RequestBody @Valid RegisterMedicData obj, UriComponentsBuilder uriBuilder) {
         var medic = new Medic(obj);
         repository.save(medic);
 
@@ -35,14 +33,20 @@ public class MedicController {
     @GetMapping
     public ResponseEntity<Page<MedicListData>> listAll(
             @PageableDefault(size = 10, sort = {"nome"})
-            Pageable pagination){
+            Pageable pagination) {
         var page = repository.findAllByAtivoTrue(pagination).map(MedicListData::new);
         return ResponseEntity.ok(page);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<MedicDetailedData> getData(@PathVariable Long id) {
+        var medic = repository.getReferenceById(id);
+        return ResponseEntity.ok(new MedicDetailedData(medic));
+    }
+
     @PutMapping
     @Transactional
-    public ResponseEntity update(@RequestBody @Valid UpdateMedicData obj){
+    public ResponseEntity update(@RequestBody @Valid UpdateMedicData obj) {
         var medic = repository.getReferenceById(obj.id());
         medic.updateData(obj);
 
@@ -51,7 +55,7 @@ public class MedicController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity delete(@PathVariable Long id){
+    public ResponseEntity delete(@PathVariable Long id) {
         var medic = repository.getReferenceById(id);
         medic.delete();
         return ResponseEntity.noContent().build();
