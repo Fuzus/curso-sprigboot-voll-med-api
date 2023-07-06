@@ -1,46 +1,49 @@
-package med.voll.api.patient;
+package med.voll.api.domain.medic;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import med.voll.api.address.Address;
+import med.voll.api.domain.address.Address;
 
 @Entity
-@Table(name = "pacientes")
+@Table(name = "medicos")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Patient {
+public class Medic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String email;
-    private String telefone;
 
-    private String cpf;
+    private String telefone;
+    private String crm;
+    @Enumerated(EnumType.STRING)
+    private Specialty especialidade;
     @Embedded
     private Address endereco;
 
-    private Boolean ativo;
+    private boolean ativo;
 
-    public Patient(RegisterPatientData data){
+    public Medic(RegisterMedicData obj) {
         this.ativo = true;
-        this.nome = data.nome();
-        this.email = data.email();
-        this.telefone = data.telefone();
-        this.cpf = data.cpf();
-        this.endereco = new Address(data.endereco());
+        this.nome = obj.nome();
+        this.email = obj.email();
+        this.telefone = obj.telefone();
+        this.crm = obj.crm();
+        this.especialidade = obj.especialidade();
+        this.endereco = new Address(obj.endereco());
     }
 
-    public void updateData(UpdatePatientData obj) {
+    public void updateData(UpdateMedicData obj) {
         if (obj.nome() != null)
             this.nome = obj.nome();
-        if (obj.telefone() != null)
+        if(obj.telefone() != null)
             this.telefone = obj.telefone();
         if (obj.endereco() != null)
             this.endereco.updateData(obj.endereco());

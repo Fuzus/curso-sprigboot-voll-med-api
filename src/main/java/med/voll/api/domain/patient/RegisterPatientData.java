@@ -1,8 +1,9 @@
-package med.voll.api.patient;
+package med.voll.api.domain.patient;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import med.voll.api.address.AddressData;
+import jakarta.validation.constraints.Pattern;
+import med.voll.api.domain.address.AddressData;
 
 public record RegisterPatientData(
         @NotBlank
@@ -12,6 +13,7 @@ public record RegisterPatientData(
         @NotBlank
         String telefone,
         @NotBlank
+        @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}", message = "{cpf.invalid}")
         String cpf,
         @Valid
         AddressData endereco
