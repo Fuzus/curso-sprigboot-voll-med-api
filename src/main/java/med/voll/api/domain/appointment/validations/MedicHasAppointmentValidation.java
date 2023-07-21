@@ -13,7 +13,7 @@ public class MedicHasAppointmentValidation implements ValidatorScheduleAppointme
     private AppointmentRepository repository;
 
     public void validate(ScheduleAppointmentData data) {
-        var medicHasAppointment = repository.existsByMedicIdAndData(data.idMedico(), data.date());
+        var medicHasAppointment = repository.existsByMedicIdAndDate(data.idMedico(), data.date());
         if (medicHasAppointment) {
             throw new ValidacaoException("Medico ja possui outra consulta marcada neste horario");
         }

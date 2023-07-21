@@ -1,6 +1,7 @@
 package med.voll.api.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
+import med.voll.api.domain.ValidacaoException;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,11 @@ public class ErrorsHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleInternalServerError(Exception ex){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro: " + ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity handleBusinessValidatorsError(ValidacaoException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
 
