@@ -1,10 +1,7 @@
 package med.voll.api.domain.appointment;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import med.voll.api.domain.medic.Medic;
 import med.voll.api.domain.patient.Patient;
 
@@ -28,5 +25,13 @@ public class Appointment {
     private Patient patient;
     @Column(name = "data")
     private LocalDateTime date;
+
+    @Column(name = "motivo_cancelamento")
+    @Enumerated(EnumType.STRING)
+    private CancelReason reason;
+
+    public void setReason(CancelReason reason){
+        this.reason = reason;
+    }
 
 }

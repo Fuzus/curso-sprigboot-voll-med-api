@@ -19,6 +19,7 @@ public interface MedicRepository extends JpaRepository<Medic, Long> {
                 and m.id not in (
                     select c.medic.id from Appointment c
                     where c.date = :date
+                    and c.reason is null
                 )
             order by rand()
             limit 1

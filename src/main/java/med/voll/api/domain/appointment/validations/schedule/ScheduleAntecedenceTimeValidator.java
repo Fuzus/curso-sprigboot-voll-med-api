@@ -1,4 +1,4 @@
-package med.voll.api.domain.appointment.validations;
+package med.voll.api.domain.appointment.validations.schedule;
 
 import med.voll.api.domain.ValidacaoException;
 import med.voll.api.domain.appointment.ScheduleAppointmentData;
@@ -8,7 +8,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Component
-public class AntecedenceTimeValidator implements ValidatorScheduleAppointment {
+public class ScheduleAntecedenceTimeValidator implements ValidatorScheduleAppointment {
 
     public void validate(ScheduleAppointmentData data) {
         var appointmentTime = data.date();
