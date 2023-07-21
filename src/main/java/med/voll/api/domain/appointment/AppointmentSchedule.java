@@ -19,26 +19,34 @@ public class AppointmentSchedule {
     @Autowired
     private PatientRepository patientRepository;
 
-    public void doSchedule(ScheduleAppointmentData obj){
-        if (!patientRepository.existsById(obj.idPaciente())){
+    public void doSchedule(ScheduleAppointmentData data){
+        if (!patientRepository.existsById(data.idPaciente())){
             throw new ValidacaoException("id do paciente informado não existe");
         }
 
-        if (obj.idMedico() != null && !medicRepository.existsById(obj.idMedico())){
+        if (data.idMedico() != null && !medicRepository.existsById(data.idMedico())){
             throw new ValidacaoException("id do medico informado não existe");
         }
 
 
 
-        var medic = chooseMedic(obj);
-        var patient = patientRepository.findById(obj.idPaciente()).get();
-        var appointment = new Appointment(null, medic, patient, obj.data());
+        var medic = chooseMedic(data);
+        var patient = patientRepository.getReferenceById(data.idPaciente());
+        var appointment = new Appointment(null, medic, patient, data.date());
 
         appointmentRepository.save(appointment);
     }
 
-    private Medic chooseMedic(ScheduleAppointmentData obj) {
-        return null;
+    private Medic chooseMedic(ScheduleAppointmentData data) {
+        if(data.idMedico() != null){
+            return medicRepository.getReferenceById(data.idMedico());
+        }
+
+        if (data.especialidade() == null){
+            throw new ValidacaoException("Especialidade é obrigatoria quando medico não for selecionado");
+        }
+
+        return medicRepository.chooseRandomFreeMedic(data.especialidade(), data.date());
     }
 
 }
