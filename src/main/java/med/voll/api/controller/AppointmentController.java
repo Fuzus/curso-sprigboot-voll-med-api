@@ -3,7 +3,6 @@ package med.voll.api.controller;
 import jakarta.validation.Valid;
 import med.voll.api.domain.appointment.AppointmentSchedule;
 import med.voll.api.domain.appointment.CancelAppointmentData;
-import med.voll.api.domain.appointment.DetailAppointment;
 import med.voll.api.domain.appointment.ScheduleAppointmentData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
